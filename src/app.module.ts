@@ -8,11 +8,11 @@ import { upperDirectiveTransformer } from './common/directives/upper-case.direct
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CONFIG_VALIDATOR } from './config/config.validator';
+import { CONFIG_OPTION } from './config/config-option.schema';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(CONFIG_VALIDATOR),
+    ConfigModule.forRoot(CONFIG_OPTION),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],

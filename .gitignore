@@ -37,4 +37,5 @@ lerna-debug.log*
 # yarn
 .yarn/
 .DS_Store
-/env
+
+/environments

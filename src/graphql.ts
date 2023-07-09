@@ -8,9 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum UserProvider {
+    EMAIL = "EMAIL",
+    GOOGLE = "GOOGLE"
+}
+
 export class CreateCatInput {
     name?: Nullable<string>;
     age?: Nullable<number>;
+}
+
+export class CreateUserInput {
+    email: string;
+    name: string;
+    provider: UserProvider;
 }
 
 export abstract class IQuery {
@@ -39,6 +50,16 @@ export class Cat {
     name?: Nullable<string>;
     age?: Nullable<number>;
     owner?: Nullable<Owner>;
+}
+
+export class User {
+    id: string;
+    email: string;
+    name: string;
+    provider: UserProvider;
+    lastLoginTime: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 type Nullable<T> = T | null;

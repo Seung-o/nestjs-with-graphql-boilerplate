@@ -18,7 +18,7 @@ const getEnvFilePath = (): string => {
   }
 };
 
-export const CONFIG_VALIDATOR: ConfigModuleOptions = {
+export const CONFIG_OPTION: ConfigModuleOptions = {
   validationSchema: Joi.object({
     MYSQL_HOST: Joi.string().required(),
     MYSQL_PORT: Joi.number().required(),

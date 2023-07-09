@@ -1,0 +1,22 @@
+scalar Date
+
+enum UserProvider {
+  EMAIL
+  GOOGLE
+}
+
+type User {
+  id: String!
+  email: String!
+  name: String!
+  provider: UserProvider!
+  lastLoginTime: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  provider: UserProvider!
+}
