@@ -6,9 +6,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
 import { join } from 'path';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CONFIG_VALIDATOR } from './config/config.validator';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(CONFIG_VALIDATOR),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
@@ -20,6 +24,24 @@ import { join } from 'path';
       installSubscriptionHandlers: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        console.log(configService.get<string>('MYSQL_USER'));
+        return {
+          type: 'mysql',
+          host: configService.get<string>('MYSQL_HOST'),
+          port: configService.get<number>('MYSQL_PORT'),
+          username: configService.get<string>('MYSQL_USERNAME'),
+          password: configService.get<string>('MYSQL_PASSWORD'),
+          database: configService.get<string>('MYSQL_DATABASE'),
+          synchronize: configService.get<boolean>('MYSQL_SYNCHRONIZE'),
+          logging: configService.get<boolean>('MYSQL_LOGGING'),
+          entities: ['dist/**/*.entity.{ts,js}'],
+        };
+      },
     }),
   ],
   controllers: [AppController],
