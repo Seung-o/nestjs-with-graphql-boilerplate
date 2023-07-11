@@ -7,7 +7,7 @@ import googleConfig from 'src/config/google.config';
 import { UserProvider } from 'src/graphql';
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(Strategy, 'GOOGLE') {
   constructor(
     @Inject(googleConfig.KEY)
     private googleConf: ConfigType<typeof googleConfig>,

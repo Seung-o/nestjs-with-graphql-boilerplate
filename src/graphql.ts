@@ -24,6 +24,11 @@ export class CreateUserInput {
     provider: UserProvider;
 }
 
+export class CreateUserAuthInput {
+    userId: string;
+    provider: UserProvider;
+}
+
 export abstract class IQuery {
     abstract cats(): Nullable<Nullable<Cat>[]> | Promise<Nullable<Nullable<Cat>[]>>;
 
@@ -56,8 +61,15 @@ export class User {
     id: string;
     email: string;
     name: string;
-    provider: UserProvider;
     lastLoginTime: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class UserAuth {
+    id: string;
+    user?: Nullable<User>;
+    provider: UserProvider;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -1464,13 +1464,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/passport@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@nestjs/passport@npm:10.0.0"
+"@nestjs/passport@npm:7.1.5":
+  version: 7.1.5
+  resolution: "@nestjs/passport@npm:7.1.5"
   peerDependencies:
-    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
-    passport: ^0.4.0 || ^0.5.0 || ^0.6.0
-  checksum: 54436958322435bcdb03bf57cc4c1303f8fbbae56d04a05335f7fd9f1563fdeab45107b2a5ed75732f9596e251b0755d282624301b7ffce7dd9f3af5323b6621
+    "@nestjs/common": ^6.0.0 || ^7.0.0
+    passport: ^0.4.0
+  checksum: 99dd96b89fd826f7a4239ed9ea2eacb9aa03bb80c7f4147d05a6270cbba45a830ec8d51bbad68d0f749f0f7797b7c90632147b3dfaec79bc89356b206cdf80f6
   languageName: node
   linkType: hard
 
@@ -6733,6 +6733,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:3":
+  version: 3.3.6
+  resolution: "nanoid@npm:3.3.6"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 7d0eda657002738aa5206107bd0580aead6c95c460ef1bdd0b1a87a9c7ae6277ac2e9b945306aaa5b32c6dcb7feaf462d0f552e7f8b5718abfc6ead5c94a71b3
+  languageName: node
+  linkType: hard
+
 "natural-compare-lite@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare-lite@npm:1.4.0"
@@ -6773,7 +6782,7 @@ __metadata:
     "@nestjs/config": ^3.0.0
     "@nestjs/core": 10.0.3
     "@nestjs/graphql": 12.0.3
-    "@nestjs/passport": ^10.0.0
+    "@nestjs/passport": 7.1.5
     "@nestjs/platform-express": 10.0.3
     "@nestjs/schematics": 10.0.1
     "@nestjs/testing": ^10.0.5
@@ -6796,6 +6805,7 @@ __metadata:
     jest: 29.5.0
     joi: ^17.9.2
     mysql2: ^3.5.0
+    nanoid: 3
     passport: ^0.6.0
     passport-google-oauth20: ^2.0.0
     prettier: 2.8.8

@@ -17,11 +17,8 @@ function createAuthGuard(): Type<CanActivate> {
       const options = { ...defaultOptions, ...this.options };
       const [request, response] = [this.getRequest(context), context.switchToHttp().getResponse()];
       const passportFn = createPassportContext(request, response);
-      const user = await passportFn(
-        // changed
-        request.body.provider || this.options.defaultStrategy,
-        options,
-        (err, user, info, status) => this.handleRequest(err, user, info, context, status),
+      const user = await passportFn(request.body.provider || this.options.defaultStrategy, options, (err: any, user: TUser, info, status) =>
+        this.handleRequest(err, user, info, context, status),
       );
       request[options.property || defaultOptions.property] = user;
       return true;

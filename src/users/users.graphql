@@ -9,8 +9,15 @@ type User {
   id: String!
   email: String!
   name: String!
-  provider: UserProvider!
   lastLoginTime: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type UserAuth {
+  id: String!
+  user: User
+  provider: UserProvider!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -18,5 +25,10 @@ type User {
 input CreateUserInput {
   email: String!
   name: String!
+  provider: UserProvider!
+}
+
+input CreateUserAuthInput {
+  userId: String!
   provider: UserProvider!
 }

@@ -1,16 +1,14 @@
 import { UserProvider } from 'src/graphql';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { UserAuth } from './user-auth.entity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ unique: true })
   email: string;
-
-  @Column('enum', { enum: UserProvider })
-  provider: UserProvider;
 
   @Column()
   name: string;
@@ -18,9 +16,6 @@ export class User {
   @CreateDateColumn()
   lastLoginTime: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToMany(() => UserAuth, (userAuth) => userAuth.user)
+  userAuths: UserAuth[];
 }
