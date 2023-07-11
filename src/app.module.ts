@@ -29,7 +29,6 @@ import { CONFIG_OPTION } from './config/config-option.schema';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        console.log(configService.get<string>('MYSQL_USER'));
         return {
           type: 'mysql',
           host: configService.get<string>('MYSQL_HOST'),
