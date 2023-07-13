@@ -1,23 +1,11 @@
 scalar Date
 
-enum UserProvider {
-  EMAIL
-  GOOGLE
-}
-
 type User {
   id: String!
   email: String!
   name: String!
   lastLoginTime: String!
-  createdAt: Date!
-  updatedAt: Date!
-}
-
-type UserAuth {
-  id: String!
-  user: User
-  provider: UserProvider!
+  auths: [UserAuth!]!
   createdAt: Date!
   updatedAt: Date!
 }

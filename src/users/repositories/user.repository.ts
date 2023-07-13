@@ -15,7 +15,7 @@ export class UserRepository extends Repository<User> {
   }
 
   async getUser(dto: Pick<User, 'email'>) {
-    const user = await this.findOne({ where: dto, relations: ['userAuths'] });
+    const user = await this.findOne({ where: dto, relations: ['auths'] });
     return user;
   }
 }

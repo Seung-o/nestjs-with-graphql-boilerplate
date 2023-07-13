@@ -11,7 +11,7 @@ export class UserAuth extends BaseEntity {
   @Column('enum', { enum: UserProvider })
   provider: UserProvider;
 
-  @OneToMany(() => User, (user) => user.userAuths)
+  @OneToMany(() => User, (user) => user.auths)
   @JoinColumn()
   user: Partial<User>;
 

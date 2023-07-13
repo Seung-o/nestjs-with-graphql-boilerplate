@@ -17,5 +17,5 @@ export class User extends BaseEntity {
   lastLoginTime: string;
 
   @OneToMany(() => UserAuth, (userAuth) => userAuth.user)
-  userAuths: UserAuth[];
+  auths: UserAuth[];
 }

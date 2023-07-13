@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UserProvider } from 'src/graphql';
-import { UserService } from 'src/users/users.service';
+import { UserService } from 'src/users/user.service';
 import { SocialCallbackInput } from './types';
 
 @Injectable()

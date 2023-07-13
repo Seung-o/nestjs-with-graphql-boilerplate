@@ -57,19 +57,20 @@ export class Cat {
     owner?: Nullable<Owner>;
 }
 
+export class UserAuth {
+    id: string;
+    user: User;
+    provider: UserProvider;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 export class User {
     id: string;
     email: string;
     name: string;
     lastLoginTime: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export class UserAuth {
-    id: string;
-    user?: Nullable<User>;
-    provider: UserProvider;
+    auths: UserAuth[];
     createdAt: Date;
     updatedAt: Date;
 }

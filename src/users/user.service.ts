@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from 'src/graphql';
 import { UserRepository } from './repositories/user.repository';
 import { UserAuthService } from './services/user-auth.service';
-import { UserResponse } from './responses/user.response';
 
 @Injectable()
 export class UserService {
@@ -21,6 +20,6 @@ export class UserService {
 
   async getUserByEmail(email: string) {
     const user = await this.userRepository.getUser({ email });
-    return new UserResponse(user);
+    return user;
   }
 }
