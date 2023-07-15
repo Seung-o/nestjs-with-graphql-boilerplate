@@ -1,7 +1,8 @@
 import { nanoid } from 'nanoid';
 import { UserProvider } from 'src/graphql';
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
+import { BaseEntity } from 'src/common/database/base.entity';
 
 @Entity()
 export class UserAuth extends BaseEntity {

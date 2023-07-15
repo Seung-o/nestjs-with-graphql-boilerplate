@@ -1,6 +1,7 @@
 import { UserProvider } from 'src/graphql';
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserAuth } from './user-auth.entity';
+import { BaseEntity } from 'src/common/database/base.entity';
 
 @Entity()
 export class User extends BaseEntity {

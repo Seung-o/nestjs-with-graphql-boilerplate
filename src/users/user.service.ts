@@ -1,25 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from 'src/graphql';
-import { UserRepository } from './repositories/user.repository';
-import { UserAuthService } from './services/user-auth.service';
+import { User } from './entities/user.entity';
+import { UserAuthManager } from './services/user-auth-manager.service';
+import { UserManager } from './services/user-manager.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository, private readonly userAuthService: UserAuthService) {}
+  constructor(private readonly userManager: UserManager, private readonly userAuthManager: UserAuthManager) {}
 
   async createUser(args: CreateUserInput) {
     const { provider, ...basicInfo } = args;
-    const user = await this.userRepository.createUser(basicInfo);
-    await this.userAuthService.createUserAuth({ userId: user.id, provider });
+    const user = await this.userManager.createUser(basicInfo);
+    await this.userAuthManager.createUserAuth({ userId: user.id, provider });
     return user;
   }
 
-  async isExistUser(email: string) {
-    return await this.userRepository.isExistUser(email);
+  async isExistUser(email: string): Promise<boolean> {
+    return await this.userManager.isExistUser(email);
   }
 
-  async getUserByEmail(email: string) {
-    const user = await this.userRepository.getUser({ email });
+  async getUser(email: string): Promise<User> {
+    const user = await this.userManager.getUser({ email });
     return user;
   }
 }
