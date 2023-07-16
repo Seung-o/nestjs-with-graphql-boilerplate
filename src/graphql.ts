@@ -13,6 +13,10 @@ export enum UserProvider {
     GOOGLE = "GOOGLE"
 }
 
+export class SocialSignupInput {
+    accessToken: string;
+}
+
 export class CreateCatInput {
     name?: Nullable<string>;
     age?: Nullable<number>;
@@ -29,14 +33,18 @@ export class CreateUserAuthInput {
     provider: UserProvider;
 }
 
+export abstract class IMutation {
+    abstract socialSignup(input: SocialSignupInput): User | Promise<User>;
+
+    abstract createCat(createCatInput?: Nullable<CreateCatInput>): Nullable<Cat> | Promise<Nullable<Cat>>;
+}
+
 export abstract class IQuery {
+    abstract googleAuth(): string | Promise<string>;
+
     abstract cats(): Nullable<Nullable<Cat>[]> | Promise<Nullable<Nullable<Cat>[]>>;
 
     abstract cat(id: string): Nullable<Cat> | Promise<Nullable<Cat>>;
-}
-
-export abstract class IMutation {
-    abstract createCat(createCatInput?: Nullable<CreateCatInput>): Nullable<Cat> | Promise<Nullable<Cat>>;
 }
 
 export abstract class ISubscription {

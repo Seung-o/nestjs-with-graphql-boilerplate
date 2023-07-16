@@ -28,6 +28,5 @@ export const CONFIG_OPTION: ConfigModuleOptions = {
     MYSQL_SYNCHRONIZE: Joi.boolean().default(false),
     MYSQL_LOGGING: Joi.boolean().default(false),
   }),
-  isGlobal: true,
   envFilePath: [getEnvFilePath()],
 };

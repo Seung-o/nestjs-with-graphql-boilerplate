@@ -1,0 +1,11 @@
+type Mutation {
+    socialSignup(input: SocialSignupInput!): User!
+}
+
+type Query {
+    googleAuth: String!
+}
+
+input SocialSignupInput {
+    accessToken: String!
+}

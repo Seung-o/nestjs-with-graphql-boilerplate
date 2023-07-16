@@ -1,27 +1,26 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { UserProvider } from 'src/graphql';
+import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/users/user.service';
-import { SocialCallbackInput } from './types';
+import { UserPayload } from './types';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly userService: UserService) {}
 
-  async callbackSocial(user: SocialCallbackInput) {
+  async socialSignup(user: UserPayload) {
     const isExistUser = await this.userService.isExistUser(user.email);
     if (isExistUser) {
-      throw new ConflictException();
+      return await this.loginSocialUser(user);
     }
 
     return await this.registerSocialUser(user);
   }
 
-  async registerSocialUser(user: SocialCallbackInput) {
+  async registerSocialUser(user: UserPayload) {
     const createdUser = await this.userService.createUser(user);
     return createdUser;
   }
 
-  async loginSocialUser(user: SocialCallbackInput) {
+  async loginSocialUser(user: UserPayload) {
     return;
   }
 }

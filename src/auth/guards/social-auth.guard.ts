@@ -1,4 +1,4 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from './auth.guard';
 
@@ -11,8 +11,8 @@ export class SocialAuthGuard extends AuthGuard() {
 
     request.body = {
       ...request.body,
-      accessToken: input.accessToken,
-      provider: input.provider,
+      accessToken: input?.accessToken,
+      provider: input?.provider,
     };
 
     return true;

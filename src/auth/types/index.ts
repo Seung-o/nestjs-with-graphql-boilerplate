@@ -1,3 +1,3 @@
 import { UserProvider } from 'src/graphql';
 
-export type SocialCallbackInput = { email: string; name: string; provider: UserProvider };
+export type UserPayload = { email: string; name: string; provider: UserProvider };

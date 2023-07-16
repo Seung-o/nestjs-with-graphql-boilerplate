@@ -1,16 +1,17 @@
 // google.strategy.ts
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import googleConfig from 'src/config/google.config';
 import { UserProvider } from 'src/graphql';
+import { UserPayload } from '../types';
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'GOOGLE') {
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     @Inject(googleConfig.KEY)
-    private googleConf: ConfigType<typeof googleConfig>,
+    private readonly googleConf: ConfigType<typeof googleConfig>,
   ) {
     super({
       clientID: googleConf.clientID,
@@ -21,10 +22,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'GOOGLE') {
     });
   }
 
-  async validate(request: any, accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<void> {
+  async validate(_request: any, _accessToken: string, _refreshToken: string, profile: any, done: VerifyCallback): Promise<UserPayload> {
     if (!profile) {
       done(new UnauthorizedException(), false);
     }
+
+    console.log(profile);
 
     const user = {
       email: profile.emails[0].value,
@@ -32,6 +35,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'GOOGLE') {
       provider: UserProvider.GOOGLE,
     };
 
-    done(null, user);
+    return user;
   }
 }
