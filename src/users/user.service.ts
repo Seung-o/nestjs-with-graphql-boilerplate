@@ -20,7 +20,7 @@ export class UserService {
   }
 
   async getUser(email: string): Promise<User> {
-    const user = await this.userManager.getUser({ email });
+    const user = await this.userManager.getUserBy({ email });
     return user;
   }
 }

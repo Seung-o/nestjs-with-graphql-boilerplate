@@ -18,8 +18,8 @@ export class UserManager {
     return !_.isNil(user) && !_.isEmpty(user);
   }
 
-  async getUser(dto: Pick<User, 'email'>) {
-    const user = await this.userRepository.findOne({ where: dto, relations: ['auths'] });
+  async getUserBy(dto: Pick<User, 'email'>) {
+    const user = await this.userRepository.findOneBy(dto);
     return user;
   }
 }

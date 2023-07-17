@@ -1,7 +1,6 @@
-import { UserProvider } from 'src/graphql';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserAuth } from './user-auth.entity';
 import { BaseEntity } from 'src/common/database/base.entity';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserAuth } from './user-auth.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -17,6 +16,6 @@ export class User extends BaseEntity {
   @CreateDateColumn()
   lastLoginTime: string;
 
-  @OneToMany(() => UserAuth, (userAuth) => userAuth.user)
+  @OneToMany(() => UserAuth, (userAuth) => userAuth.user, {onDelete: "CASCADE", onUpdate: "CASCADE", eager: true})
   auths: UserAuth[];
 }

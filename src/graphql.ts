@@ -14,7 +14,9 @@ export enum UserProvider {
 }
 
 export class SocialSignupInput {
-    accessToken: string;
+    email: string;
+    name: string;
+    provider: UserProvider;
 }
 
 export class CreateCatInput {
@@ -34,14 +36,12 @@ export class CreateUserAuthInput {
 }
 
 export abstract class IMutation {
-    abstract socialSignup(input: SocialSignupInput): User | Promise<User>;
+    abstract socialSignup(input: SocialSignupInput): string | Promise<string>;
 
     abstract createCat(createCatInput?: Nullable<CreateCatInput>): Nullable<Cat> | Promise<Nullable<Cat>>;
 }
 
 export abstract class IQuery {
-    abstract googleAuth(): string | Promise<string>;
-
     abstract cats(): Nullable<Nullable<Cat>[]> | Promise<Nullable<Nullable<Cat>[]>>;
 
     abstract cat(id: string): Nullable<Cat> | Promise<Nullable<Cat>>;

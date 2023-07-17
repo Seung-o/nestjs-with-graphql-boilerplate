@@ -1,26 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/user.service';
 import { UserPayload } from './types';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
-  async socialSignup(user: UserPayload) {
-    const isExistUser = await this.userService.isExistUser(user.email);
+  async socialSignup(payload: UserPayload) {
+    const isExistUser = await this.userService.isExistUser(payload.email);
     if (isExistUser) {
-      return await this.loginSocialUser(user);
+      return await this.loginSocialUser(payload);
     }
 
-    return await this.registerSocialUser(user);
+    return await this.registerSocialUser(payload);
   }
 
-  async registerSocialUser(user: UserPayload) {
-    const createdUser = await this.userService.createUser(user);
-    return createdUser;
+  async registerSocialUser(payload: UserPayload) {
+    const user = await this.userService.createUser(payload);
+    return this.jwtService.sign(user);
   }
 
-  async loginSocialUser(user: UserPayload) {
-    return;
+  async loginSocialUser(payload: UserPayload) {
+    const user = await this.userService.getUser(payload.email);
+    return this.jwtService.sign(user);
   }
 }

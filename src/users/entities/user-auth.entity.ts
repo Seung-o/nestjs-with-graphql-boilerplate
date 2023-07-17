@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid';
-import { UserProvider } from 'src/graphql';
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
-import { User } from './user.entity';
 import { BaseEntity } from 'src/common/database/base.entity';
+import { UserProvider } from 'src/graphql';
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class UserAuth extends BaseEntity {
@@ -12,10 +12,11 @@ export class UserAuth extends BaseEntity {
   @Column('enum', { enum: UserProvider })
   provider: UserProvider;
 
-  @OneToMany(() => User, (user) => user.auths)
+  @ManyToOne(() => User, (user) => user.auths, { onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn()
-  user: Partial<User>;
+  user: User;
 
+  @BeforeInsert()
   _beforeInsert() {
     this.id = nanoid();
   }

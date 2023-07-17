@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -39,6 +40,7 @@ import { CONFIG_OPTION } from './config/config-option.schema';
           database: configService.get<string>('MYSQL_DATABASE'),
           synchronize: configService.get<boolean>('MYSQL_SYNCHRONIZE'),
           logging: configService.get<boolean>('MYSQL_LOGGING'),
+          namingStrategy: new SnakeNamingStrategy(),
           entities: ['dist/**/*.entity.{ts,js}'],
         };
       },

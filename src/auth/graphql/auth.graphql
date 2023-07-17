@@ -1,11 +1,9 @@
 type Mutation {
-    socialSignup(input: SocialSignupInput!): User!
-}
-
-type Query {
-    googleAuth: String!
+    socialSignup(input: SocialSignupInput!): String!
 }
 
 input SocialSignupInput {
-    accessToken: String!
+    email: String!
+    name: String!
+    provider: UserProvider!
 }
