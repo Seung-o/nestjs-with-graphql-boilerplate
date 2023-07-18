@@ -4,18 +4,18 @@ import { UserAuth } from './user-auth.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column({ unique: true })
-  email: string;
+    @Column({ unique: true })
+    email: string;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @CreateDateColumn()
-  lastLoginTime: string;
+    @CreateDateColumn()
+    lastLoginTime: string;
 
-  @OneToMany(() => UserAuth, (userAuth) => userAuth.user, {onDelete: "CASCADE", onUpdate: "CASCADE", eager: true})
-  auths: UserAuth[];
+    @OneToMany(() => UserAuth, (userAuth) => userAuth.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true })
+    auths: UserAuth[];
 }

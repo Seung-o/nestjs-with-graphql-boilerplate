@@ -6,20 +6,20 @@ import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserManager {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async createUser(user: Partial<User>) {
-    const insertResult: InsertResult = await this.userRepository.insert(this.userRepository.create(user));
-    return insertResult.generatedMaps[0];
-  }
+    async createUser(user: Partial<User>) {
+        const insertResult: InsertResult = await this.userRepository.insert(this.userRepository.create(user));
+        return insertResult.generatedMaps[0];
+    }
 
-  async isExistUser(email: string) {
-    const user = await this.userRepository.findOneBy({ email });
-    return !_.isNil(user) && !_.isEmpty(user);
-  }
+    async isExistUser(email: string) {
+        const user = await this.userRepository.findOneBy({ email });
+        return !_.isNil(user) && !_.isEmpty(user);
+    }
 
-  async getUserBy(dto: Pick<User, 'email'>) {
-    const user = await this.userRepository.findOneBy(dto);
-    return user;
-  }
+    async getUserBy(dto: Pick<User, 'email'>) {
+        const user = await this.userRepository.findOneBy(dto);
+        return user;
+    }
 }

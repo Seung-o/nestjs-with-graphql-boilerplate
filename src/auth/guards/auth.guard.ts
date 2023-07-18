@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, mixin, Optional, Type, UnauthorizedException } from '@nestjs/common';
-import { defaultOptions } from '@nestjs/passport/dist/options';
 import { AuthModuleOptions, IAuthGuard } from '@nestjs/passport';
+import { defaultOptions } from '@nestjs/passport/dist/options';
 import { memoize } from '@nestjs/passport/dist/utils/memoize.util';
-import * as passport from 'passport';
 import { Request, Response } from 'express';
+import * as passport from 'passport';
 
 export const AuthGuard: (type?: string | string[]) => Type<IAuthGuard> = memoize(createAuthGuard);
 
