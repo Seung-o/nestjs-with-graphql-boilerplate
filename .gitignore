@@ -34,8 +34,6 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# yarn
-.yarn/
 .DS_Store
 
 /environments
