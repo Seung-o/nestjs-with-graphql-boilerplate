@@ -19,8 +19,11 @@ export class UserService {
     return await this.userManager.isExistUser(email);
   }
 
-  async getUser(email: string): Promise<User> {
-    const user = await this.userManager.getUserBy({ email });
-    return user;
+  async getUser(userId: string): Promise<User> {
+    return await this.userManager.getUserBy({ id: userId });
+  }
+
+  async getUserByEmail(email: string): Promise<User> {
+    return await this.userManager.getUserBy({ email });
   }
 }

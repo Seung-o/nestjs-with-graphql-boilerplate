@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   async loginSocialUser(payload: UserPayload) {
-    const user: User = await this.userService.getUser(payload.email);
+    const user: User = await this.userService.getUserByEmail(payload.email);
     const accessToken: string = this.jwtService.sign({ id: user.id });
     return { ...user, accessToken };
   }
