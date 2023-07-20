@@ -36,9 +36,20 @@ export class CreateUserAuthInput {
 }
 
 export abstract class IMutation {
-    abstract socialSignup(input: SocialSignupInput): string | Promise<string>;
+    abstract socialSignup(input: SocialSignupInput): User | Promise<User>;
 
     abstract createCat(createCatInput?: Nullable<CreateCatInput>): Nullable<Cat> | Promise<Nullable<Cat>>;
+}
+
+export class User {
+    accessToken: string;
+    id: string;
+    email: string;
+    name: string;
+    lastLoginTime: string;
+    auths: UserAuth[];
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export abstract class IQuery {
@@ -69,16 +80,6 @@ export class UserAuth {
     id: string;
     user: User;
     provider: UserProvider;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export class User {
-    id: string;
-    email: string;
-    name: string;
-    lastLoginTime: string;
-    auths: UserAuth[];
     createdAt: Date;
     updatedAt: Date;
 }

@@ -12,7 +12,7 @@ export class UserService {
     const { provider, ...basicInfo } = args;
     const user = await this.userManager.createUser(basicInfo);
     await this.userAuthManager.createUserAuth({ userId: user.id, provider });
-    return user;
+    return user as User;
   }
 
   async isExistUser(email: string): Promise<boolean> {

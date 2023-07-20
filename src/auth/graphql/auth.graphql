@@ -1,9 +1,13 @@
 type Mutation {
-  socialSignup(input: SocialSignupInput!): String!
+  socialSignup(input: SocialSignupInput!): User!
 }
 
 input SocialSignupInput {
   email: String!
   name: String!
   provider: UserProvider!
+}
+
+extend type User {
+  accessToken: String!
 }

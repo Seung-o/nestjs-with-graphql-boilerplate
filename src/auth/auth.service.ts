@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/entities/user.entity';
 import { UserService } from 'src/users/user.service';
 import { UserPayload } from './types';
 
@@ -17,12 +18,14 @@ export class AuthService {
   }
 
   async registerSocialUser(payload: UserPayload) {
-    const user = await this.userService.createUser(payload);
-    return this.jwtService.sign(user);
+    const user: User = await this.userService.createUser(payload);
+    const accessToken: string = this.jwtService.sign(user);
+    return { ...user, accessToken };
   }
 
   async loginSocialUser(payload: UserPayload) {
-    const user = await this.userService.getUser(payload.email);
-    return this.jwtService.sign({ id: user.id });
+    const user: User = await this.userService.getUser(payload.email);
+    const accessToken: string = this.jwtService.sign({ id: user.id });
+    return { ...user, accessToken };
   }
 }
