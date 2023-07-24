@@ -1,14 +1,15 @@
 import { Mutation, Resolver } from '@nestjs/graphql';
-import { Input } from 'src/graphql/args/input.args';
 import { AuthService } from './auth.service';
-import { UserPayload } from './types';
+import { Input } from '../graphql/args/input.args';
+import { CreateSocialUserInput } from '../users/inputs/user.input';
+import { UserResponse } from '../users/responses/user.response';
 
 @Resolver('Auth')
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation('socialSignup')
-  async socialSignup(@Input() payload: UserPayload) {
+  @Mutation((returns) => UserResponse)
+  async socialSignup(@Input() payload: CreateSocialUserInput) {
     return await this.authService.socialSignup(payload);
   }
 }

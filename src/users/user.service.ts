@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserInput } from 'src/graphql';
 import { User } from './entities/user.entity';
 import { UserAuthManager } from './services/user-auth-manager.service';
 import { UserManager } from './services/user-manager.service';
+import { CreateSocialUserInput } from './inputs/user.input';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userManager: UserManager, private readonly userAuthManager: UserAuthManager) {}
 
-  async createUser(args: CreateUserInput) {
+  async createSocialUser(args: CreateSocialUserInput) {
     const { provider, ...basicInfo } = args;
     const user = await this.userManager.createUser(basicInfo);
     await this.userAuthManager.createUserAuth({ userId: user.id, provider });
