@@ -12,4 +12,8 @@ export class UserAuthManager {
     const insertResult = await this.userAuthRepository.insert(this.userAuthRepository.create(args));
     return insertResult[0];
   }
+
+  async getUserAuthsBy(dto: { userId: string }) {
+    return await this.userAuthRepository.findBy({ user: { id: dto.userId } });
+  }
 }

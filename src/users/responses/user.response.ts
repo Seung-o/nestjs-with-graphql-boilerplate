@@ -16,9 +16,9 @@ export class UserResponse extends User {
   @Field(() => Date)
   lastLoginTime: Date;
 
-  @Field(() => [UserAuthResponse])
+  @Field((_type) => [UserAuthResponse])
   auths: UserAuthResponse[];
 
-  @Field()
-  accessToken: string;
+  @Field({ nullable: true })
+  accessToken?: string;
 }

@@ -1,22 +1,17 @@
-import { CanActivate, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
-import jwtConfig from '../config/jwt.config';
-import { ConfigType } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { UserService } from '../../users/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    private jwtService: JwtService,
-    @Inject(jwtConfig.KEY) private jwtConf: ConfigType<typeof jwtConfig>,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService, private readonly userService: UserService) {}
 
   async canActivate(context: GqlExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
-    const request = ctx.getContext().request;
+    const request = ctx.getContext().req;
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
@@ -24,7 +19,9 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload: { id: string } = this.jwtService.verify(token, { secret: this.jwtConf.secretOrPrivateKey });
+      const payload: {
+        id: string;
+      } = this.jwtService.verify(token, { secret: this.configService.get<string>('secretOrPrivateKey') });
       request['user'] = await this.userService.getUser(payload.id);
     } catch (err) {
       throw new UnauthorizedException();

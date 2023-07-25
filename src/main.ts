@@ -1,15 +1,17 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import * as passport from 'passport';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
 
-    app.useGlobalPipes(new ValidationPipe());
-    app.use(passport.initialize());
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.use(passport.initialize());
 
-    await app.listen(process.env.PORT);
-    console.log(`Application is running on: ${await app.getUrl()}`);
+  await app.listen(process.env.PORT);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
+
 bootstrap();

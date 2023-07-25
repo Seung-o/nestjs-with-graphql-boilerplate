@@ -29,4 +29,5 @@ export const CONFIG_OPTION: ConfigModuleOptions = {
     MYSQL_LOGGING: Joi.boolean().default(false),
   }),
   envFilePath: [getEnvFilePath()],
+  isGlobal: true,
 };

@@ -26,4 +26,8 @@ export class UserService {
   async getUserByEmail(email: string): Promise<User> {
     return await this.userManager.getUserBy({ email });
   }
+
+  async getUserAuths(userId: string) {
+    return await this.userAuthManager.getUserAuthsBy({ userId });
+  }
 }

@@ -19,7 +19,6 @@ export class UserManager {
   }
 
   async getUserBy(dto: Partial<Pick<User, 'id' | 'email'>>) {
-    const user = await this.userRepository.findOneBy(dto);
-    return user;
+    return await this.userRepository.findOneBy(dto);
   }
 }
