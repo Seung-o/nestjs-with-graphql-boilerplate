@@ -10,9 +10,9 @@ export class UserService {
 
   async createSocialUser(args: CreateSocialUserInput) {
     const { provider, ...basicInfo } = args;
-    const user = await this.userManager.createUser(basicInfo);
-    await this.userAuthManager.createUserAuth({ userId: user.id, provider });
-    return user as User;
+    const user: User = await this.userManager.createUser(basicInfo);
+    await this.userAuthManager.createUserAuth({ user, provider });
+    return user;
   }
 
   async isExistUser(email: string): Promise<boolean> {

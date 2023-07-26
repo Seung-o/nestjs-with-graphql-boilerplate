@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { UserAuth } from '../entities/user-auth.entity';
-import { CreateUserAuthInput } from '../inputs/user-auth.input';
 
 @Injectable()
 export class UserAuthManager {
   constructor(@InjectRepository(UserAuth) private readonly userAuthRepository: Repository<UserAuth>) {}
 
-  async createUserAuth(args: CreateUserAuthInput) {
+  async createUserAuth(args: DeepPartial<UserAuth>) {
     const insertResult = await this.userAuthRepository.insert(this.userAuthRepository.create(args));
-    return insertResult[0];
+    if (insertResult.identifiers.length > 0) {
+      return await this.userAuthRepository.findOneBy(insertResult.identifiers[0]);
+    }
+
+    return null;
   }
 
   async getUserAuthsBy(dto: { userId: string }) {

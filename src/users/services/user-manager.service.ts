@@ -10,7 +10,12 @@ export class UserManager {
 
   async createUser(user: Partial<User>) {
     const insertResult: InsertResult = await this.userRepository.insert(this.userRepository.create(user));
-    return insertResult.generatedMaps[0];
+
+    if (insertResult.identifiers.length > 0) {
+      return await this.userRepository.findOneBy(insertResult.identifiers[0]);
+    }
+
+    return null;
   }
 
   async isExistUser(email: string) {

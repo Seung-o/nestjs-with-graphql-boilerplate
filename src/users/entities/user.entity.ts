@@ -19,6 +19,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   refreshToken: string | null;
 
-  @OneToMany(() => UserAuth, (userAuth) => userAuth.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE', eager: true })
+  @OneToMany(() => UserAuth, (userAuth) => userAuth.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   auths: UserAuth[];
 }

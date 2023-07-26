@@ -12,7 +12,7 @@ export class UserAuth extends BaseEntity {
   @Column('enum', { enum: UserProvider })
   provider: UserProvider;
 
-  @ManyToOne(() => User, (user) => user.auths, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.auths, { onDelete: 'CASCADE', onUpdate: 'CASCADE', nullable: false })
   @JoinColumn()
   user: User;
 

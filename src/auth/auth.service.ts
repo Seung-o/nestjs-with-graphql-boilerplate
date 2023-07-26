@@ -19,7 +19,7 @@ export class AuthService {
 
   async registerSocialUser(payload: CreateSocialUserInput) {
     const user: User = await this.userService.createSocialUser(payload);
-    const accessToken: string = this.jwtService.sign(user);
+    const accessToken: string = this.jwtService.sign({ id: user.id });
     return { ...user, accessToken };
   }
 
