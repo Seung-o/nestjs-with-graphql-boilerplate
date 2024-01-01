@@ -5,6 +5,9 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/users/user.module';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { HttpModule } from '@nestjs/axios';
+import { KakaoService } from './services/kakao.serivce';
 
 @Module({
   imports: [
@@ -18,7 +21,9 @@ import { AuthService } from './auth.service';
         signOptions: { expiresIn: '1d' },
       }),
     }),
+    HttpModule,
   ],
-  providers: [AuthResolver, AuthService],
+  controllers: [AuthController],
+  providers: [AuthResolver, AuthService, KakaoService],
 })
 export class AuthModule {}
