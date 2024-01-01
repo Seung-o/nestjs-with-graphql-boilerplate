@@ -4,15 +4,15 @@ import * as Joi from 'joi';
 import { join } from 'path';
 
 const getEnvFilePath = (): string => {
-  const baseEnvDirctory = 'environments';
+  const baseEnvDirectory = 'environments';
 
   switch (process.env.SERVICE_ENV) {
     case 'local':
-      return join(baseEnvDirctory, '.env.local');
+      return join(baseEnvDirectory, '.env.local');
     case 'development':
-      return join(baseEnvDirctory, '.env.development');
+      return join(baseEnvDirectory, '.env.development');
     case 'production':
-      return join(baseEnvDirctory, '.env.production');
+      return join(baseEnvDirectory, '.env.production');
     default:
       throw new InternalServerErrorException();
   }

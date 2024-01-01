@@ -7,10 +7,17 @@ import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthorizedUser } from '../users/decorators/user.decorator';
 import { UserService } from '../users/user.service';
+import { AuthUrlInput } from './inputs/auth-url.input';
+import { AuthUrlResponse } from './responses/auth-url.response';
 
 @Resolver(() => UserResponse)
 export class AuthResolver {
   constructor(private readonly authService: AuthService, private readonly userService: UserService) {}
+
+  @Query(() => AuthUrlResponse)
+  async getAuthUrl(@Input() payload: AuthUrlInput) {
+    return await this.authService.getAuthUrl(payload.provider);
+  }
 
   @Mutation(() => UserResponse)
   async socialSignup(@Input() payload: CreateSocialUserInput) {
