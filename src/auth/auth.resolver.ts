@@ -1,7 +1,6 @@
-import { Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Input } from '../graphql/args/input.args';
-import { CreateSocialUserInput } from '../users/inputs/user.input';
 import { UserResponse } from '../users/responses/user.response';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from './guards/auth.guard';
@@ -17,11 +16,6 @@ export class AuthResolver {
   @Query(() => AuthUrlResponse)
   async getAuthUrl(@Input() payload: AuthUrlInput) {
     return await this.authService.getAuthUrl(payload.provider);
-  }
-
-  @Mutation(() => UserResponse)
-  async socialSignup(@Input() payload: CreateSocialUserInput) {
-    return await this.authService.socialSignup(payload);
   }
 
   @Query(() => UserResponse)

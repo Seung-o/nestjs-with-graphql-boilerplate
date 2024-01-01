@@ -1,9 +1,10 @@
 import { BaseEntity } from 'src/common/database/base.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { UserAuth } from './user-auth.entity';
+import { UserAuthEntity } from './user-auth.entity';
+import { User } from '../interfaces/user.interface';
 
-@Entity()
-export class User extends BaseEntity {
+@Entity('user')
+export class UserEntity extends BaseEntity implements User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,8 +18,8 @@ export class User extends BaseEntity {
   lastLoginTime: Date;
 
   @Column({ nullable: true })
-  refreshToken: string | null;
+  refreshToken?: string | null;
 
-  @OneToMany(() => UserAuth, (userAuth) => userAuth.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  auths: UserAuth[];
+  @OneToMany(() => UserAuthEntity, (userAuth) => userAuth.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  auths: UserAuthEntity[];
 }

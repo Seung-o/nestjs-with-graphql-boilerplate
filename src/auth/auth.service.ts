@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 import { UserService } from 'src/users/user.service';
 import { CreateSocialUserInput } from '../users/inputs/user.input';
 import { UserProvider } from '../users/enums/user-provider.enum';
 import { ConfigService } from '@nestjs/config';
 import { AuthUrlResponse } from './responses/auth-url.response';
 import { KakaoRedirectInput } from './inputs/auth-kakao.input';
-import { KakaoService } from './services/kakao.serivce';
+import { KakaoService } from './services/kakao.service';
+import { JwtTokenGenerator } from './services/jwt-token.service';
+import { JwtTokenDTO } from './dto/jwt-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
 
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtTokenGenerator: JwtTokenGenerator,
     private readonly configService: ConfigService,
     private readonly kakaoService: KakaoService,
   ) {
@@ -36,15 +37,15 @@ export class AuthService {
   }
 
   async registerSocialUser(payload: CreateSocialUserInput) {
-    const user: User = await this.userService.createSocialUser(payload);
-    const accessToken: string = this.jwtService.sign({ id: user.id });
-    return { ...user, accessToken };
+    const user: UserEntity = await this.userService.createSocialUser(payload);
+    const token: JwtTokenDTO = this.jwtTokenGenerator.sign(user.id);
+    return { ...user, ...token };
   }
 
   async loginSocialUser(payload: CreateSocialUserInput) {
-    const user: User = await this.userService.getUserByEmail(payload.email);
-    const accessToken: string = this.jwtService.sign({ id: user.id });
-    return { ...user, accessToken };
+    const user: UserEntity = await this.userService.getUserByEmail(payload.email);
+    const token: JwtTokenDTO = this.jwtTokenGenerator.sign(user.id);
+    return { ...user, ...token };
   }
 
   async getAuthUrl(provider: UserProvider) {
@@ -64,8 +65,12 @@ export class AuthService {
       clientSecret: this.kakaoSecret,
     });
 
-    console.log(profile);
+    const { accessToken, refreshToken } = await this.socialSignup({
+      email: profile.kakao_account.email,
+      name: profile.kakao_account.profile.nickname,
+      provider: UserProvider.KAKAO,
+    });
 
-    return profile;
+    return { accessToken, refreshToken };
   }
 }

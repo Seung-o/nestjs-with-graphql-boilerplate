@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { UserAuthManager } from './services/user-auth-manager.service';
 import { UserManager } from './services/user-manager.service';
 import { CreateSocialUserInput } from './inputs/user.input';
@@ -10,7 +10,7 @@ export class UserService {
 
   async createSocialUser(args: CreateSocialUserInput) {
     const { provider, ...basicInfo } = args;
-    const user: User = await this.userManager.createUser(basicInfo);
+    const user: UserEntity = await this.userManager.createUser(basicInfo);
     await this.userAuthManager.createUserAuth({ user, provider });
     return user;
   }
@@ -19,11 +19,11 @@ export class UserService {
     return await this.userManager.isExistUser(email);
   }
 
-  async getUser(userId: string): Promise<User> {
+  async getUser(userId: string): Promise<UserEntity> {
     return await this.userManager.getUserBy({ id: userId });
   }
 
-  async getUserByEmail(email: string): Promise<User> {
+  async getUserByEmail(email: string): Promise<UserEntity> {
     return await this.userManager.getUserBy({ email });
   }
 

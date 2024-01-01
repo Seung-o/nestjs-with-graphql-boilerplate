@@ -1,9 +1,9 @@
-import { User } from '../entities/user.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UserAuthResponse } from './user-auth.response';
+import { User } from '../interfaces/user.interface';
 
 @ObjectType()
-export class UserResponse extends User {
+export class UserResponse implements User {
   @Field()
   id: string;
 
@@ -20,5 +20,5 @@ export class UserResponse extends User {
   auths: UserAuthResponse[];
 
   @Field({ nullable: true })
-  accessToken?: string;
+  refreshToken?: string;
 }

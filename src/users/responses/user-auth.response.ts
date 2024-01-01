@@ -1,11 +1,11 @@
-import { UserAuth } from '../entities/user-auth.entity';
 import { UserProvider } from '../enums/user-provider.enum';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
-import { User } from '../entities/user.entity';
+import { UserAuth } from '../interfaces/user-auth.interface';
+import { User } from '../interfaces/user.interface';
 
 @ObjectType()
-export class UserAuthResponse extends UserAuth {
+export class UserAuthResponse implements UserAuth {
   @Field()
   id: string;
 

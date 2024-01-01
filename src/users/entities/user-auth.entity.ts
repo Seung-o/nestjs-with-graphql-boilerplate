@@ -1,20 +1,21 @@
 import { nanoid } from 'nanoid';
 import { BaseEntity } from 'src/common/database/base.entity';
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { UserProvider } from '../enums/user-provider.enum';
+import { UserAuth } from '../interfaces/user-auth.interface';
 
-@Entity()
-export class UserAuth extends BaseEntity {
+@Entity('user_auth')
+export class UserAuthEntity extends BaseEntity implements UserAuth {
   @PrimaryColumn()
   id: string;
 
   @Column('enum', { enum: UserProvider })
   provider: UserProvider;
 
-  @ManyToOne(() => User, (user) => user.auths, { onDelete: 'CASCADE', onUpdate: 'CASCADE', nullable: false })
+  @ManyToOne(() => UserEntity, (user) => user.auths, { onDelete: 'CASCADE', onUpdate: 'CASCADE', nullable: false })
   @JoinColumn()
-  user: User;
+  user: UserEntity;
 
   @BeforeInsert()
   _beforeInsert() {
