@@ -29,7 +29,7 @@
     "@nestjs/core": "10.0.3",
     "@nestjs/graphql": "12.0.3",
     "@nestjs/jwt": "10.1.0",
-    "@nestjs/passport": "7.1.5",
+    "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "10.0.3",
     "@nestjs/typeorm": "^10.0.0",
     "axios": "^1.6.3",
