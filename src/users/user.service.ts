@@ -3,6 +3,7 @@ import { UserEntity } from './entities/user.entity';
 import { UserAuthManager } from './services/user-auth-manager.service';
 import { UserManager } from './services/user-manager.service';
 import { CreateSocialUserInput } from './inputs/user.input';
+import {UpdateUserDTO} from "./dto/user.dto";
 
 @Injectable()
 export class UserService {
@@ -29,5 +30,9 @@ export class UserService {
 
   async getUserAuths(userId: string) {
     return await this.userAuthManager.getUserAuthsBy({ userId });
+  }
+
+  async updateUser(userId: string, dto: UpdateUserDTO) {
+    return await this.userManager.updateUser(userId, dto);
   }
 }

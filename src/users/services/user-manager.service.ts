@@ -18,6 +18,12 @@ export class UserManager {
     return null;
   }
 
+  async updateUser(userId: string, partial: Partial<UserEntity>) {
+    const dto = this.userRepository.create(partial);
+    await this.userRepository.update({id: userId}, dto);
+    return await this.userRepository.findOneBy({id: userId});
+  }
+
   async isExistUser(email: string) {
     const user = await this.userRepository.findOneBy({ email });
     return !_.isNil(user) && !_.isEmpty(user);

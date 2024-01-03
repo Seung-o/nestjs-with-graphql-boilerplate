@@ -8,13 +8,16 @@ import { AuthUrlResponse } from './responses/auth-url.response';
 import { KakaoRedirectInput } from './inputs/auth-kakao.input';
 import { KakaoService } from './services/kakao.service';
 import { JwtTokenGenerator } from './services/jwt-token.service';
-import { JwtTokenDTO } from './dto/jwt-token.dto';
+import { JwtToken } from './dto/jwt.dto';
+import {User} from "../users/interfaces/user.interface";
+import {AuthenticatedUser} from "./dto/auth.dto";
+import {JwtAuth} from "./interfaces/auth.interface";
 
 @Injectable()
 export class AuthService {
-  private kakaoClientId: string;
-  private kakaoRedirectUrl: string;
-  private kakaoSecret: string;
+  private readonly kakaoClientId: string;
+  private readonly kakaoRedirectUrl: string;
+  private readonly kakaoSecret: string;
 
   constructor(
     private readonly userService: UserService,
@@ -38,17 +41,17 @@ export class AuthService {
 
   async registerSocialUser(payload: CreateSocialUserInput) {
     const user: UserEntity = await this.userService.createSocialUser(payload);
-    const token: JwtTokenDTO = this.jwtTokenGenerator.sign(user.id);
-    return { ...user, ...token };
+    const jwtToken: JwtToken = this.jwtTokenGenerator.sign(user.id);
+    return new AuthenticatedUser({...user, ...jwtToken});
   }
 
   async loginSocialUser(payload: CreateSocialUserInput) {
     const user: UserEntity = await this.userService.getUserByEmail(payload.email);
-    const token: JwtTokenDTO = this.jwtTokenGenerator.sign(user.id);
-    return { ...user, ...token };
+    const jwtToken: JwtToken = this.jwtTokenGenerator.sign(user.id);
+    return new AuthenticatedUser({...user, ...jwtToken});
   }
 
-  async getAuthUrl(provider: UserProvider) {
+  async getAuthUrl(provider: UserProvider): Promise<AuthUrlResponse> {
     let url: string = null;
 
     if (provider === UserProvider.KAKAO)
@@ -57,7 +60,7 @@ export class AuthService {
     return new AuthUrlResponse(url);
   }
 
-  async signupByKakao(query: KakaoRedirectInput) {
+  async signupByKakao(query: KakaoRedirectInput): Promise<JwtAuth> {
     const profile = await this.kakaoService.getKakaoProfile({
       code: query.code,
       redirectUri: this.kakaoRedirectUrl,
@@ -65,12 +68,20 @@ export class AuthService {
       clientSecret: this.kakaoSecret,
     });
 
-    const { accessToken, refreshToken } = await this.socialSignup({
+    const { id: userId, accessToken, refreshToken } = await this.socialSignup({
       email: profile.kakao_account.email,
       name: profile.kakao_account.profile.nickname,
       provider: UserProvider.KAKAO,
     });
 
+    await this.userService.updateUser(userId, {refreshToken});
+
     return { accessToken, refreshToken };
+  }
+
+  async refreshJwt(refreshToken: string) {
+    const jwtToken: JwtToken = this.jwtTokenGenerator.refresh(refreshToken);
+    const user: User = await this.userService.getUser(jwtToken.userId);
+    return new AuthenticatedUser({...user, ...jwtToken});
   }
 }

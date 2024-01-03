@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, UnauthorizedException} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { JwtTokenDTO } from '../dto/jwt-token.dto';
+import {JwtPayload, JwtToken} from '../dto/jwt.dto';
 
 @Injectable()
 export class JwtTokenGenerator {
-  private accessTokenSecret: string;
-  private accessTokenExpiresIn: string;
-  private refreshTokenSecret: string;
-  private refreshTokenExpiresIn: string;
+  private readonly accessTokenSecret: string;
+  private readonly accessTokenExpiresIn: string;
+  private readonly refreshTokenSecret: string;
+  private readonly refreshTokenExpiresIn: string;
 
   constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService) {
     this.accessTokenSecret = this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
@@ -17,7 +17,7 @@ export class JwtTokenGenerator {
     this.refreshTokenExpiresIn = this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRES_IN');
   }
 
-  sign(userId: string): JwtTokenDTO {
+  sign(userId: string): JwtToken {
     const accessToken = this.jwtService.sign(
       { userId },
       {
@@ -33,6 +33,15 @@ export class JwtTokenGenerator {
       },
     );
 
-    return { accessToken, refreshToken };
+    return { userId, accessToken, refreshToken };
+  }
+
+  refresh(refreshToken: string) {
+    try{
+    const payload: JwtPayload = this.jwtService.verify<JwtPayload>(refreshToken, {secret: this.refreshTokenSecret});
+    return this.sign(payload.userId);
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }
